@@ -9,6 +9,7 @@ import com.amrg.herafi.HerafiApplication
 import com.amrg.herafi.shared.DataState
 import com.amrg.herafi.shared.UiEvent
 import com.amrg.herafi.shared.UiText
+import com.amrg.herafi.ui.navigation.Screen
 import com.amrg.herafi.utils.Validation
 import com.hero.ataa.domain.use_cases.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -67,8 +68,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                         }
                         is DataState.SuccessWithoutData -> {
                             _uiState.value = LoginUiState.Initial
-                            //_uiEvent.send(UiEvent.Navigate(route = Screen.HomeScreen.route))
-                            Toast.makeText(HerafiApplication.applicationContext, "Login Successful", Toast.LENGTH_SHORT).show()
+                            _uiEvent.send(UiEvent.Navigate(route = Screen.HomeScreen.route))
                         }
                         else -> Unit
                     }

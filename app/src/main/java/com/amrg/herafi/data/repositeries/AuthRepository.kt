@@ -1,5 +1,6 @@
 package com.amrg.herafi.data.repositeries
 
+import com.amrg.herafi.data.remote.models.requests.EditProfileRequest
 import com.amrg.herafi.data.remote.models.requests.LoginRequest
 import com.amrg.herafi.data.remote.models.requests.RegisterRequest
 import com.amrg.herafi.data.remote.models.responses.UserResponse
@@ -12,6 +13,8 @@ import javax.inject.Inject
 
 private const val LOGIN_URL = "/users/login"
 private const val REGISTER_URL = "/users/register"
+private const val VALIDATE_TOKEN_URL = "/users/tokencheck"
+private const val EDIT_PROFILE_URL = "/user"
 
 class AuthRepository @Inject constructor(
     private val httpClient: HttpClient
@@ -32,4 +35,18 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    suspend fun validateToken(token: String) {
+        httpClient.get {
+            url("${BASE_API_URL}${VALIDATE_TOKEN_URL}")
+            header(HttpHeaders.Authorization, "Token $token")
+        }
+    }
+
+    suspend fun editProfile(editProfileRequest: EditProfileRequest, token: String): UserResponse {
+        return httpClient.put {
+            url("${BASE_API_URL}${EDIT_PROFILE_URL}")
+            setBody(editProfileRequest)
+            header(HttpHeaders.Authorization, "Token $token")
+        }.body()
+    }
 }

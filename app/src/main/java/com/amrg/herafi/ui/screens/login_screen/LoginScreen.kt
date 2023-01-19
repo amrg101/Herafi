@@ -203,11 +203,11 @@ private fun SkipRow(navController: NavController) {
         Spacer(modifier = Modifier.width(1.dp))
         TextButton(
             onClick = {
-              /*  navController.navigate(Screen.HomeScreen.route) {
+                navController.navigate(Screen.HomeScreen.route) {
                     popUpTo(0)
-                }*/
+                }
             },
-            modifier = Modifier.width(45.dp)
+            modifier = Modifier.width(48.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.skip),
