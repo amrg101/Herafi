@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 18
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 18
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build test
+    - name: Integration tests
+      env:
+        APIURL:  http://localhost:8080/api
+      run: |
+        chmod +x postman_tests/run-api-tests.sh
+        ./gradlew run &
+        ./postman_tests/run-api-tests.sh
+        ./gradlew --stop

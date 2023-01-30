@@ -1,4 +1,4 @@
-package com.hero.ataa.di
+package com.amrg.herafi.di
 
 import android.util.Log
 import com.amrg.herafi.data.remote.models.responses.ErrorResponse

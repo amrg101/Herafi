@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -38,6 +37,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.amrg.herafi.R
+import com.amrg.herafi.shared.Constants
 import com.amrg.herafi.shared.UiEvent
 import com.amrg.herafi.ui.navigation.Screen
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
@@ -58,8 +58,6 @@ fun HomeScreen(
 ) {
     val scrollState = rememberScrollState()
     val scaffoldState = rememberScaffoldState()
-    val adsLazyRowState = rememberLazyListState()
-
 
     val context = LocalContext.current
 
@@ -158,18 +156,6 @@ fun HomeScreen(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 ContributeWithUsRow(navController)
-                if(viewModel.userLoggedInFlow.collectAsState().value) {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        text = stringResource(id = R.string.donate),
-                        style = MaterialTheme.typography.h4.copy(color = MaterialTheme.colors.onBackground),
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    DonateRow(navController)
-                }
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -378,29 +364,37 @@ private fun MostImportantRow(navController: NavController) {
         mainAxisAlignment = if (language == "ar") FlowMainAxisAlignment.End else FlowMainAxisAlignment.Start
     ) {
 
-        val orphan = stringResource(id = R.string.orphan_assist)
-        val ramadan = stringResource(id = R.string.ramadan_projects)
-        val health = stringResource(id = R.string.health)
+        val designer = stringResource(id = R.string.designer)
+        val contractor = stringResource(id = R.string.contractor)
+        val assistance = stringResource(id = R.string.assistance)
+        val allCategory = stringResource(id = R.string.all_cat)
 
         CategoryItem(
-            name = orphan,
+            name = allCategory,
             icon = painterResource(id = R.drawable.ic_yateem_icon),
             iconSize = 23.dp,
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${orphan}/${Constants.CategoryApiKey.ORPHAN}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${allCategory}/${Constants.CategoryApiKey.ALL_CATEGORIES}")
         }
         CategoryItem(
-            name = health,
+            name = designer,
+            icon = painterResource(id = R.drawable.ic_yateem_icon),
+            iconSize = 23.dp,
+        ) {
+            navController.navigate(Screen.ProjectsScreen.route + "/${designer}/${Constants.CategoryApiKey.DESIGNER}")
+        }
+        CategoryItem(
+            name = contractor,
             icon = painterResource(id = R.drawable.ic_health_icon),
             iconSize = 22.dp,
         ) {
-           // navController.navigate(Screen.ProjectsScreen.route + "/${health}/${Constants.CategoryApiKey.HEALTH}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${contractor}/${Constants.CategoryApiKey.CONTRACTOR}")
         }
         CategoryItem(
-            name = ramadan,
+            name = assistance,
             icon = painterResource(id = R.drawable.ic_moon_icon),
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${ramadan}/${Constants.CategoryApiKey.RAMADAN}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${assistance}/${Constants.CategoryApiKey.ASSISTANCE}")
         }
     }
 }
@@ -417,113 +411,64 @@ private fun ContributeWithUsRow(navController: NavController) {
         crossAxisSpacing = (localConfig.screenWidthDp * 2.5F / 100.0).dp,
         mainAxisAlignment = if (language == "ar") FlowMainAxisAlignment.End else FlowMainAxisAlignment.Start
     ) {
-        val mosques = stringResource(id = R.string.mosques)
-        val education = stringResource(id = R.string.education)
-        val food = stringResource(id = R.string.food)
-        val housing = stringResource(id = R.string.housing)
-        val dressing = stringResource(id = R.string.dressing)
-        val assistance = stringResource(id = R.string.assistance)
-        val specialNeeds = stringResource(id = R.string.special_needs)
+        val carpenter = stringResource(id = R.string.carpenter)
+        val accountant = stringResource(id = R.string.accountant)
+        val teacher = stringResource(id = R.string.teacher)
+        val lawyer = stringResource(id = R.string.lawyer)
+        val engineer = stringResource(id = R.string.engineer)
+        val doctor = stringResource(id = R.string.doctor)
+        val electrician = stringResource(id = R.string.elect)
 
         CategoryItem(
-            name = mosques,
+            name = carpenter,
             icon = painterResource(id = R.drawable.ic_mosque_icon),
             iconSize = 25.dp,
         ) {
-        //    navController.navigate(Screen.ProjectsScreen.route + "/${mosques}/${Constants.CategoryApiKey.MOSQUES}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${carpenter}/${Constants.CategoryApiKey.CARPENTER}")
         }
         CategoryItem(
-            name = education,
+            name = accountant,
             icon = painterResource(id = R.drawable.ic_education_icon),
             iconSize = 28.dp,
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${education}/${Constants.CategoryApiKey.EDUCATION}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${accountant}/${Constants.CategoryApiKey.ACCOUNTANT}")
         }
         CategoryItem(
-            name = food,
+            name = teacher,
             icon = painterResource(id = R.drawable.ic_food_icon),
             iconSize = 25.dp,
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${food}/${Constants.CategoryApiKey.FOOD}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${teacher}/${Constants.CategoryApiKey.TEACHER}")
         }
         CategoryItem(
-            name = housing,
+            name = lawyer,
             icon = painterResource(id = R.drawable.ic_housing_icon),
             iconSize = 25.dp,
         ) {
-         //   navController.navigate(Screen.ProjectsScreen.route + "/${housing}/${Constants.CategoryApiKey.HOUSING}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${lawyer}/${Constants.CategoryApiKey.LAWYER}")
         }
         CategoryItem(
-            name = dressing,
+            name = engineer,
             icon = painterResource(id = R.drawable.ic_shirt_icon),
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${dressing}/${Constants.CategoryApiKey.DRESSING}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${engineer}/${Constants.CategoryApiKey.ENGINEER}")
         }
         CategoryItem(
-            name = assistance,
+            name = doctor,
             icon = painterResource(id = R.drawable.ic_helping_icon),
             iconSize = 26.dp,
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${assistance}/${Constants.CategoryApiKey.ASSISTANCE}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${doctor}/${Constants.CategoryApiKey.DOCTOR}")
         }
         CategoryItem(
-            name = specialNeeds,
+            name = electrician,
             icon = painterResource(id = R.drawable.ic_wheel_chair_icon),
             iconSize = 27.dp,
         ) {
-          //  navController.navigate(Screen.ProjectsScreen.route + "/${specialNeeds}/${Constants.CategoryApiKey.SPECIALNEEDS}")
+            navController.navigate(Screen.ProjectsScreen.route + "/${electrician}/${Constants.CategoryApiKey.ELECTRICIAN}")
         }
     }
 }
-
-@Composable
-private fun DonateRow(navController: NavController) {
-    val language = Locale.getDefault().language
-    val localConfig = LocalConfiguration.current
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        mainAxisSpacing = (localConfig.screenWidthDp * 2.5F / 100.0).dp,
-        crossAxisSpacing = (localConfig.screenWidthDp * 2.5F / 100.0).dp,
-        mainAxisAlignment = if (language == "ar") FlowMainAxisAlignment.End else FlowMainAxisAlignment.Start
-    ) {
-        val sacrifice = stringResource(id = R.string.sacrifice)
-        val sadaka = stringResource(id = R.string.sadaka)
-        val zakat = stringResource(id = R.string.paying_zakat)
-        val miskeen = stringResource(id = R.string.poor_feed)
-
-        CategoryItem(
-            name = sacrifice,
-            icon = painterResource(id = R.drawable.ic_cow_icon),
-            iconSize = 25.dp,
-        ) {
-         //   navController.navigate(Screen.SacrificeProjectScreen.route)
-        }
-        CategoryItem(
-            name = sadaka,
-            icon = painterResource(id = R.drawable.ic_money_bags_icon),
-            iconSize = 25.dp,
-        ) {
-          //  navController.navigate(Screen.SadakaProjectScreen.route)
-        }
-        CategoryItem(
-            name = miskeen,
-            icon = painterResource(id = R.drawable.ic_food_bag_icon),
-            iconSize = 25.dp
-        ) {
-         //   navController.navigate(Screen.MiskeenProjectScreen.route)
-        }
-        CategoryItem(
-            name = zakat,
-            icon = painterResource(id = R.drawable.ic_zakat_icon),
-        ) {
-         //   navController.navigate(Screen.ZakatProjectScreen.route)
-        }
-
-    }
-}
-
 @Composable
 private fun CategoryItem(
     name: String,

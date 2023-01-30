@@ -1,17 +1,15 @@
 package com.amrg.herafi.ui.screens.login_screen
 
-import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amrg.herafi.HerafiApplication
 import com.amrg.herafi.shared.DataState
 import com.amrg.herafi.shared.UiEvent
 import com.amrg.herafi.shared.UiText
 import com.amrg.herafi.ui.navigation.Screen
 import com.amrg.herafi.utils.Validation
-import com.hero.ataa.domain.use_cases.LoginUseCase
+import com.amrg.herafi.domain.use_cases.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel

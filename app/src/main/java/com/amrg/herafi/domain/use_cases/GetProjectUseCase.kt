@@ -1,10 +1,8 @@
 package com.amrg.herafi.domain.use_cases
 
 import com.amrg.herafi.R
-import com.amrg.herafi.data.remote.models.requests.LoginRequest
-import com.amrg.herafi.data.remote.models.responses.toUser
-import com.amrg.herafi.data.repositeries.AuthRepository
 import com.amrg.herafi.data.local.repositeries.UserRepository
+import com.amrg.herafi.data.repositeries.ProjectsRepository
 import com.amrg.herafi.shared.DataState
 import com.amrg.herafi.shared.HerafiException
 import com.amrg.herafi.shared.UiText
@@ -14,19 +12,16 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class LoginUseCase @Inject constructor(
-    private val userRepository: UserRepository,
-    private val authRepository: AuthRepository
+
+class GetProjectUseCase @Inject constructor(
+    private val projectsRepository: ProjectsRepository,
+    private val userRepository: UserRepository
 ) {
-    operator fun invoke(email: String, password: String) = flow<DataState<Nothing>> {
+    operator fun invoke(slug: String) = flow {
         emit(DataState.Loading())
         try {
-            val user = authRepository.login(LoginRequest(LoginRequest.User(email = email, password = password))).toUser()
-            userRepository.update {
-                it.copy(name = user.name, email = user.email, token = user.token)
-            }
-            userRepository.triggerLoggedInValue(true)
-            emit(DataState.SuccessWithoutData())
+            val article = projectsRepository.getProject(slug, userRepository.user())
+            emit(DataState.Success(article))
         } catch (ex: UnknownHostException) {
             emit(DataState.Error(UiText.ResourceText(R.string.can_not_reach_the_server)))
         } catch (ex: ConnectException) {
@@ -34,7 +29,7 @@ class LoginUseCase @Inject constructor(
         } catch (ex: SocketTimeoutException) {
             emit(DataState.Error(UiText.ResourceText(R.string.bad_internet_connection)))
         } catch (ex: HerafiException) {
-            emit(DataState.Error(UiText.ResourceText(resId = R.string.invalid_email_or_password)))
+            emit(DataState.Error(UiText.DynamicText(ex.message)))
         } catch (ex: Exception) {
             emit(
                 DataState.Error(
